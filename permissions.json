@@ -1,0 +1,7 @@
+{
+    "roles" : {
+      "admin": ["all"],
+      "doctor": ["view", "download", "share", "send"],
+      "pacs-admin": ["view", "download", "send", "modify", "anonymize", "upload", "edit-labels", "share"]
+    }
+  }
