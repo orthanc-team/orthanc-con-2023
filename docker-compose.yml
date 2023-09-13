@@ -26,7 +26,6 @@ services:
       ORTHANC__POSTGRESQL__HOST: "orthanc-db"
       ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 10
       ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_SEARCH_MODE: "search-button"
-      #ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_CONTENT_IF_NO_SEARCH: "empty"
       ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__ENABLE_SHARES: "true"
       ORTHANC__ORTHANC_EXPLORER_2__TOKENS__INSTANT_LINKS_VALIDITY: 3600
       ORTHANC__ORTHANC_EXPLORER_2__TOKENS__SHARE_TYPE: "stone-viewer-publication"
@@ -37,13 +36,6 @@ services:
       ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__CLIENT_ID: "orthanc"
     volumes:
       - /data:/var/lib/orthanc/db
-
-  orthanc-db:
-    image: postgres:15
-    restart: unless-stopped
-    volumes: ["orthanc-db:/var/lib/postgresql/data:Z"] 
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: "trust"
 
   orthanc-auth-service:
     image: orthancteam/orthanc-auth-service:23.6.1
@@ -82,6 +74,13 @@ services:
       POSTGRES_PASSWORD: "keycloak"
       POSTGRES_USER: "keycloak"
       POSTGRES_DB: "keycloak"
+
+  orthanc-db:
+    image: postgres:15
+    restart: unless-stopped
+    volumes: ["orthanc-db:/var/lib/postgresql/data:Z"] 
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
 
 volumes:
   orthanc-db:
