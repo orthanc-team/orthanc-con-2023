@@ -1,7 +1,16 @@
 {
-    "roles" : {
-      "admin": ["all"],
-      "doctor": ["view", "download", "share", "send"],
-      "pacs-admin": ["view", "download", "send", "modify", "anonymize", "upload", "edit-labels", "share"]
+  "roles" : {
+    "admin-role": {
+      "permissions": ["all"],
+      "authorized_labels": ["*"]
+    },
+    "doctor-role": {
+      "permissions":["view", "download", "share", "send"],
+      "authorized_labels": ["*"]
+    },
+    "external-role": {
+      "permissions":["view", "download"],
+      "authorized_labels": ["external"]
     }
   }
+}

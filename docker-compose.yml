@@ -2,7 +2,7 @@ version: "3"
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx:23.6.1
+    image: orthancteam/orthanc-nginx:23.9.0
     depends_on: [orthanc, orthanc-auth-service]
     restart: unless-stopped
     ports: ["8080:80"]
@@ -11,7 +11,7 @@ services:
       ENABLE_KEYCLOAK: "true"
 
   orthanc:
-    image: osimis/orthanc:23.8.2
+    image: osimis/orthanc:23.9.0
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc CON 2023"
@@ -38,7 +38,7 @@ services:
       - /data:/var/lib/orthanc/db
 
   orthanc-auth-service:
-    image: orthancteam/orthanc-auth-service:23.6.1
+    image: orthancteam/orthanc-auth-service:23.9.0
     depends_on: [keycloak]
     restart: unless-stopped
     environment:
@@ -52,7 +52,7 @@ services:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
   keycloak:
-    image: orthancteam/orthanc-keycloak:23.6.1
+    image: orthancteam/orthanc-keycloak:23.9.0
     depends_on: [keycloak-db]
     restart: unless-stopped
     environment:
