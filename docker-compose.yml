@@ -11,7 +11,7 @@ services:
       ENABLE_KEYCLOAK: "true"
 
   orthanc:
-    image: osimis/orthanc:23.9.0
+    image: osimis/orthanc:23.9.1
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc CON 2023"
