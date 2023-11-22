@@ -11,7 +11,6 @@ services:
       ENABLE_KEYCLOAK: "true"
       ENABLE_OHIF: "true"
       ENABLE_MEDDREAM: "true"
-      ENABLE_ORTHANC_TOKEN_SERVICE: "true"
 
   orthanc:
     image: osimis/orthanc:mainline-2023.10.17
