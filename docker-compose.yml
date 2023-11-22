@@ -47,7 +47,7 @@ services:
     image: osimis/orthanc:mainline-2023.10.17
     volumes:
       - /data:/var/lib/orthanc/db
-      - ./meddream-plugin.py:/scripts/meddream-plugin.py
+      - ./meddream/meddream-plugin.py:/scripts/meddream-plugin.py
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc for API"
