@@ -11,7 +11,7 @@ services:
       ENABLE_KEYCLOAK: "true"
       ENABLE_OHIF: "true"
       ENABLE_MEDDREAM: "true"
-      ENABLE_ORTHANC_FOR_API: "true"
+      ENABLE_ORTHANC_TOKEN_SERVICE: "true"
 
   orthanc:
     image: osimis/orthanc:mainline-2023.10.17
@@ -43,7 +43,7 @@ services:
     volumes:
       - /data:/var/lib/orthanc/db
     secrets:
-      - orthanc-api.secret.json
+      - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
 
   orthanc-for-api:
     image: osimis/orthanc:mainline-2023.10.17
@@ -73,9 +73,12 @@ services:
       ENABLE_KEYCLOAK: "true"
       PUBLIC_ORTHANC_ROOT: "https://orthanc-con-2023.orthanc.team/orthanc/"
       PUBLIC_LANDING_ROOT: "https://orthanc-con-2023.orthanc.team/orthanc/ui/app/token-landing.html"
+      MEDDREAM_TOKEN_SERVICE_URL: "http://meddream-token-service:8088/v3/generate"
+      PUBLIC_MEDDREAM_ROOT: "https://orthanc-con-2023.orthanc.team/meddream/"
       PERMISSIONS_FILE_PATH: "/orthanc_auth_service/permissions.json"
     secrets:
       - SECRET_KEY
+      - USERS
     volumes:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
@@ -142,7 +145,11 @@ volumes:
   meddream-settings:
 
 secrets:
+  USERS:
+    file: secrets/orthanc-token.secret.json
   orthanc-api.secret.json:
     file: secrets/orthanc-api.secret.json
   SECRET_KEY:
     file: secrets/SECRET_KEY
+  ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD:
+    file: secrets/ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
