@@ -13,7 +13,7 @@ services:
       ENABLE_MEDDREAM: "true"
 
   orthanc:
-    image: osimis/orthanc:mainline-2023.10.17
+    image: osimis/orthanc:mainline-2023.11.29
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc CON 2023"
@@ -45,7 +45,7 @@ services:
       - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
 
   orthanc-for-api:
-    image: osimis/orthanc:mainline-2023.10.17
+    image: osimis/orthanc:mainline-2023.11.29
     volumes:
       - /data:/var/lib/orthanc/db
       - ./meddream/meddream-plugin.py:/scripts/meddream-plugin.py
