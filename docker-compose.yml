@@ -41,6 +41,10 @@ services:
       ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__URL: "https://orthanc-con-2023.orthanc.team/keycloak/"
       ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__REALM: "orthanc"
       ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__CLIENT_ID: "orthanc"
+      ORTHANC__DICOM_MODALITIES: |
+        {
+            "SYNGOVIA": ["SYNGOVIA", "10.6.1.3", 104]
+        }
     volumes:
       - /data:/var/lib/orthanc/db
     secrets:
