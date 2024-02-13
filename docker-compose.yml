@@ -2,7 +2,7 @@ version: "3"
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx:24.1.0
+    image: orthancteam/orthanc-nginx:24.2.0
     depends_on: [orthanc, orthanc-auth-service]
     restart: unless-stopped
     ports: ["8080:80"]
@@ -13,7 +13,7 @@ services:
       ENABLE_MEDDREAM: "true"
 
   orthanc:
-    image: osimis/orthanc:24.1.2
+    image: osimis/orthanc:24.2.1
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc CON 2023"
@@ -52,7 +52,7 @@ services:
       - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
 
   orthanc-for-api:
-    image: osimis/orthanc:24.1.2
+    image: osimis/orthanc:24.2.1
     volumes:
       - /data:/var/lib/orthanc/db
       - ./meddream/meddream-plugin.py:/scripts/meddream-plugin.py
@@ -72,7 +72,7 @@ services:
     
     
   orthanc-auth-service:
-    image: orthancteam/orthanc-auth-service:24.1.0
+    image: orthancteam/orthanc-auth-service:24.2.0
     depends_on: [keycloak]
     restart: unless-stopped
     environment:
@@ -89,7 +89,7 @@ services:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
   keycloak:
-    image: orthancteam/orthanc-keycloak:24.1.0
+    image: orthancteam/orthanc-keycloak:24.2.0
     depends_on: [keycloak-db]
     restart: unless-stopped
     environment:
@@ -120,15 +120,15 @@ services:
       POSTGRES_HOST_AUTH_METHOD: "trust"
   
   ohif:
-    image: orthancteam/ohif-v3:24.1.0
+    image: orthancteam/ohif-v3:24.2.0
     restart: unless-stopped
 
   meddream-token-service:
-    image: orthancteam/meddream-token-service:24.1.0
+    image: orthancteam/meddream-token-service:24.2.0
     restart: unless-stopped
 
   meddream-viewer:
-    image: orthancteam/meddream-viewer:24.1.0
+    image: orthancteam/meddream-viewer:24.2.0
     restart: unless-stopped
     depends_on:
       - orthanc-for-api
