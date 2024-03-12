@@ -84,7 +84,8 @@ services:
       PERMISSIONS_FILE_PATH: "/orthanc_auth_service/permissions.json"
     secrets:
       - SECRET_KEY
-      - USERS
+    env_file:
+      - ./secrets/orthanc-token.secret.env
     volumes:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
@@ -156,8 +157,6 @@ volumes:
   meddream-settings:
 
 secrets:
-  USERS:
-    file: secrets/orthanc-token.secret.json
   orthanc-api.secret.json:
     file: secrets/orthanc-api.secret.json
   SECRET_KEY:
