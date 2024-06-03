@@ -10,7 +10,6 @@ services:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
       ENABLE_ORTHANC_TOKEN_SERVICE: "true"
-      ENABLE_ORTHANC_FOR_API: "true"
 
   orthanc:
     image: orthancteam/orthanc:24.5.1
