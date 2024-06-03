@@ -29,7 +29,8 @@
       "stone-webviewer",
       "orthanc-explorer-2"
     ],
-    "CheckedLevel": "studies"
+    "CheckedLevel": "studies",
+    "TokenHttpHeaders" : [ "api-key" ]
   }
 }
 

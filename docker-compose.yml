@@ -61,6 +61,7 @@ services:
       - ./secrets/orthanc-token.secret.env
     secrets:
       - SECRET_KEY
+      - KEYCLOAK_CLIENT_SECRET
     volumes:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
@@ -106,3 +107,5 @@ secrets:
     file: secrets/ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
   SECRET_KEY:
     file: secrets/SECRET_KEY
+  KEYCLOAK_CLIENT_SECRET:
+    file: secrets/KEYCLOAK_CLIENT_SECRET
