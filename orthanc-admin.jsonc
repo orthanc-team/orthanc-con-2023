@@ -1,0 +1,35 @@
+{
+  "OrthancExplorer2": {
+    "IsDefaultOrthancUI": true,
+    "UiOptions": {
+      "EnableApiViewMenu": true,
+      "EnableShares": true,
+      "DefaultShareDuration": 90,
+      "ShareDurations": [0, 7, 15, 30, 90, 365],
+      "ViewersIcons" : {
+        "stone-webviewer": "bi bi-eye-fill"
+      }
+    },
+    "Tokens" : {
+      "InstantLinksValidity": 3600,
+      "ShareType": "stone-viewer-publication"
+    },
+    "Keycloak" : {
+      "Enable": true,
+      "Url": "https://orthanc-con-2023.orthanc.team/keycloak",
+      "Realm": "orthanc",
+      "ClientId": "orthanc"
+    }
+  },
+  "AuthenticationEnabled": false,     // because it is handled by the authorization plugin
+  "Authorization": {
+    "WebServiceRootUrl": "http://orthanc-auth-service:8000/",
+    "WebServiceUsername": "share-user",
+    "StandardConfigurations" : [
+      "stone-webviewer",
+      "orthanc-explorer-2"
+    ],
+    "CheckedLevel": "studies"
+  }
+}
+

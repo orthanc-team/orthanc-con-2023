@@ -1,0 +1,34 @@
+{
+    "ExtraMainDicomTags" : {
+        "Instance" : [
+            "Rows",
+            "Columns",
+            "ImageType",
+            "SOPClassUID",
+            "ContentDate",
+            "ContentTime",
+            "FrameOfReferenceUID",
+            "PixelSpacing",
+            "SpecificCharacterSet",
+            "BitsAllocated",
+            "BitsStored"
+        ],
+        "Series" : [
+            "TimezoneOffsetFromUTC",
+            "PerformedProcedureStepStartDate",
+            "PerformedProcedureStepStartTime",
+            "RequestAttributesSequence"
+        ],
+        "Study": [
+            "TimezoneOffsetFromUTC"
+        ],
+        "Patient": []
+        },
+        
+    "DicomWeb" : {
+        "Enable" : true
+    },
+    "WebViewer" : {
+        "DownloadAsJpegEnabled" : true
+    }
+}

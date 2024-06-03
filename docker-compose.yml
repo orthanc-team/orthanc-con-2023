@@ -2,95 +2,71 @@ version: "3"
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx:24.2.0
-    depends_on: [orthanc, orthanc-auth-service]
+    image: orthancteam/orthanc-nginx:24.5.1
+    depends_on: [orthanc, orthanc-for-api, orthanc-auth-service]
     restart: unless-stopped
     ports: ["8080:80"]
     environment:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
-      ENABLE_OHIF: "true"
-      ENABLE_MEDDREAM: "true"
+      ENABLE_ORTHANC_TOKEN_SERVICE: "true"
+      ENABLE_ORTHANC_FOR_API: "true"
 
   orthanc:
-    image: orthancteam/orthanc:24.3.3
+    image: orthancteam/orthanc:24.5.1
+    volumes:
+      - ./orthanc-admin.jsonc:/etc/orthanc/orthanc-admin.json
+      - ./orthanc-common.jsonc:/etc/orthanc/orthanc-common.json
+      - orthanc-data:/var/lib/orthanc/db:Z
     restart: unless-stopped
     environment:
-      ORTHANC__NAME: "Orthanc CON 2023"
-      ORTHANC__AUTHENTICATION_ENABLED: "false"
-      ORTHANC__AUTHORIZATION__WEB_SERVICE_ROOT_URL: "http://orthanc-auth-service:8000/"
-      ORTHANC__AUTHORIZATION__WEB_SERVICE_USERNAME: "share-user"
-      ORTHANC__AUTHORIZATION__STANDARD_CONFIGURATIONS: '["stone-webviewer","orthanc-explorer-2"]'
-      ORTHANC__AUTHORIZATION__CHECKED_LEVEL: "studies"
-      STONE_WEB_VIEWER_PLUGIN_ENABLED: "true"
-      ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc/dicom-web/"
-      ORTHANC__POSTGRESQL__ENABLE_INDEX: "true"
-      ORTHANC__POSTGRESQL__HOST: "orthanc-db"
-      ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 10
-      ORTHANC__OVERWRITE_INSTANCES: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__SHOW_SAME_PATIENT_STUDIES_FILTER: |
-        ["PatientBirthDate", "PatientID"]
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_SEARCH_MODE: "search-button"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__ENABLE_SHARES: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__ENABLE_OPEN_IN_OHIF_VIEWER_3: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__ENABLE_OPEN_IN_MED_DREAM_VIEWER: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__MED_DREAM_VIEWER_PUBLIC_ROOT: "https://orthanc-con-2023.orthanc.team/meddream/"
-      ORTHANC__ORTHANC_EXPLORER_2__TOKENS__INSTANT_LINKS_VALIDITY: 3600
-      ORTHANC__ORTHANC_EXPLORER_2__TOKENS__SHARE_TYPE: "stone-viewer-publication"
-      ORTHANC__ORTHANC_EXPLORER_2__IS_DEFAULT_ORTHANC_UI: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__ENABLE: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__URL: "https://orthanc-con-2023.orthanc.team/keycloak/"
-      ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__REALM: "orthanc"
-      ORTHANC__ORTHANC_EXPLORER_2__KEYCLOAK__CLIENT_ID: "orthanc"
-      ORTHANC__DICOM_MODALITIES: |
-        {
-            "SYNGOVIA": ["SYNGOVIA", "10.6.1.3", 104]
-        }
-    volumes:
-      - /data:/var/lib/orthanc/db
-    secrets:
-      - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
-
-  orthanc-for-api:
-    image: orthancteam/orthanc:24.3.3
-    volumes:
-      - /data:/var/lib/orthanc/db
-      - ./meddream/meddream-plugin.py:/scripts/meddream-plugin.py
-    restart: unless-stopped
-    environment:
-      ORTHANC__NAME: "Orthanc for API"
-      ORTHANC__POSTGRESQL__HOST: "orthanc-db"
+      ORTHANC__NAME: "Orthanc"
       VERBOSE_ENABLED: "true"
       VERBOSE_STARTUP: "true"
-      ORTHANC__AUTHENTICATION_ENABLED: "true"
-      ORTHANC__PYTHON_SCRIPT: "/scripts/meddream-plugin.py"
-      ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc-api/dicom-web/"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__ENABLE_OPEN_IN_MED_DREAM_VIEWER: "true"
-      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__MED_DREAM_VIEWER_PUBLIC_ROOT: "https://orthanc-con-2023.orthanc.team/meddream/"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_SEARCH_MODE: "search-button"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_CONTENT_IF_NO_SEARCH: "empty"
+      ORTHANC__ORTHANC_EXPLORER_2__IS_DEFAULT_ORTHANC_UI: "true"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__SHOW_SAME_PATIENT_STUDIES_FILTER: |
+        ["PatientBirthDate", "PatientID"]
+      STONE_WEB_VIEWER_PLUGIN_ENABLED: "true"
+      ORTHANC__STONE_WEB_VIEWER__SHOW_INFO_PANEL_AT_STARTUP: "Never"
+      ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc/dicom-web/"
+      ORTHANC__DATABASE_SERVER_IDENTIFIER: "orthanc1"
+      ORTHANC__POSTGRESQL__ENABLE_INDEX: "true"
+      ORTHANC__POSTGRESQL__HOST: "postgres"
+      ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 50
+      ORTHANC__POSTGRESQL__TRANSACTION_MODE: "ReadCommitted"
+      ORTHANC__POSTGRESQL__ENABLE_STORAGE: "false"
     secrets:
-      - orthanc-api.secret.json
-    
-    
+      #- postgres-azure.secret.json
+      - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
+
+  postgres:
+    image: postgres:15
+    restart: unless-stopped
+    volumes: ["orthanc-index:/var/lib/postgresql/data:Z"] 
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+
   orthanc-auth-service:
-    image: orthancteam/orthanc-auth-service:24.2.0
+    image: orthancteam/orthanc-auth-service:24.5.1
     depends_on: [keycloak]
     restart: unless-stopped
     environment:
       ENABLE_KEYCLOAK: "true"
       PUBLIC_ORTHANC_ROOT: "https://orthanc-con-2023.orthanc.team/orthanc/"
       PUBLIC_LANDING_ROOT: "https://orthanc-con-2023.orthanc.team/orthanc/ui/app/token-landing.html"
-      MEDDREAM_TOKEN_SERVICE_URL: "http://meddream-token-service:8088/v3/generate"
-      PUBLIC_MEDDREAM_ROOT: "https://orthanc-con-2023.orthanc.team/meddream/"
       PERMISSIONS_FILE_PATH: "/orthanc_auth_service/permissions.json"
-    secrets:
-      - SECRET_KEY
+      ENABLE_KEYCLOAK_API_KEYS: "true"
     env_file:
       - ./secrets/orthanc-token.secret.env
+    secrets:
+      - SECRET_KEY
     volumes:
       - ./permissions.json:/orthanc_auth_service/permissions.json
 
   keycloak:
-    image: orthancteam/orthanc-keycloak:24.2.0
+    image: orthancteam/orthanc-keycloak:24.5.1
     depends_on: [keycloak-db]
     restart: unless-stopped
     environment:
@@ -113,53 +89,21 @@ services:
       POSTGRES_USER: "keycloak"
       POSTGRES_DB: "keycloak"
 
-  orthanc-db:
-    image: postgres:15
-    restart: unless-stopped
-    volumes: ["orthanc-db:/var/lib/postgresql/data:Z"] 
-    environment:
-      POSTGRES_HOST_AUTH_METHOD: "trust"
-  
-  ohif:
-    image: orthancteam/ohif-v3:24.2.0
-    restart: unless-stopped
-
-  meddream-token-service:
-    image: orthancteam/meddream-token-service:24.2.0
-    restart: unless-stopped
-
-  meddream-viewer:
-    image: orthancteam/meddream-viewer:24.2.0
-    restart: unless-stopped
-    depends_on:
-      - orthanc-for-api
-    environment:
-      integration: "study"
-      TOKEN_SERVICE_ADDRESS: "http://meddream-token-service:8088/v3/validate"
-      ORTHANC_BASE_URL: "http://orthanc-for-api:8042"
-      ORTHANC_USER: "meddream"
-      #ORTHANC_MEDDREAM_PYTHON_PLUGIN_ENABLED: "true"
-      MEDDREAM_PACS_CONFIG_TYPE: "Dicomweb"
-      #MEDDREAM_PACS_CONFIG_TYPE: "Orthanc"
-      ORTHANC_HOSTNAME: "orthanc-for-api"
-      ORTHANC_DICOM_PORT: 4242
-      ORTHANC_AET: "ORTHANC"
-    env_file:
-      - ./secrets/meddream.secret.env
-    volumes:
-      - meddream-license:/opt/meddream/license
-      - meddream-settings:/opt/meddream/sys/settings
-
 volumes:
-  orthanc-db:
   keycloak-db:
-  meddream-license:
-  meddream-settings:
+  orthanc-data:
+  orthanc-index:
 
 secrets:
   orthanc-api.secret.json:
     file: secrets/orthanc-api.secret.json
-  SECRET_KEY:
-    file: secrets/SECRET_KEY
+  orthanc-ingest.secret.json:
+    file: secrets/orthanc-ingest.secret.json
+  orthanc-frontdesk.secret.json:
+    file: secrets/orthanc-frontdesk.secret.json
+  postgres-azure.secret.json:
+    file: secrets/postgres-azure.secret.json
   ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD:
     file: secrets/ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
+  SECRET_KEY:
+    file: secrets/SECRET_KEY
