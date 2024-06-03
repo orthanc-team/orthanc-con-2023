@@ -1,10 +1,10 @@
 {
   "roles" : {
-    "admin": {
+    "admin-role": {
       "permissions": ["all"],
       "authorized_labels": ["*"]
     },
-    "doctor": {
+    "doctor-role": {
       "permissions":["view", "download", "share", "send"],
       "authorized_labels": ["*"]
     },
