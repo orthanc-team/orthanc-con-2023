@@ -3,7 +3,7 @@ services:
 
   nginx:
     image: orthancteam/orthanc-nginx:24.5.1
-    depends_on: [orthanc, orthanc-for-api, orthanc-auth-service]
+    depends_on: [orthanc, orthanc-auth-service]
     restart: unless-stopped
     ports: ["8080:80"]
     environment:
