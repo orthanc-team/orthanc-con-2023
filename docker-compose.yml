@@ -109,3 +109,5 @@ secrets:
     file: secrets/SECRET_KEY
   KEYCLOAK_CLIENT_SECRET:
     file: secrets/KEYCLOAK_CLIENT_SECRET
+
+# test
