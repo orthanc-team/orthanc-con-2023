@@ -2,14 +2,16 @@ version: "3"
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx:24.5.1
+    image: orthancteam/orthanc-nginx-certbot:main
     depends_on: [orthanc, orthanc-auth-service]
     restart: unless-stopped
-    ports: ["8080:80"]
+    ports: ["80:80", "443:443"]
     environment:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
       ENABLE_ORTHANC_TOKEN_SERVICE: "true"
+      DOMAIN_NAME: "orthanc-con-2023.orthanc.team"
+      CERTBOT_EMAIL: "ops@orthanc.team"
 
   orthanc:
     image: orthancteam/orthanc:24.5.1
