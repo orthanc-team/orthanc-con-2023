@@ -1,7 +1,7 @@
 {
   "roles" : {
     "admin-role": {
-      "permissions": ["all"],
+      "permissions": ["all", "admin-permissions"],
       "authorized_labels": ["*"]
     },
     "doctor-role": {
@@ -11,6 +11,14 @@
     "upload": {
       "permissions":["upload"],
       "authorized_labels": ["*"]
+    },
+    "hosp1-role": {
+      "permissions":["view", "download", "share", "send"],
+      "authorized_labels": ["hospital-1"]
+    },
+    "hosp2-role": {
+      "permissions":["view", "download", "share", "send"],
+      "authorized_labels": ["hospital-2"]
     }
   }
 }
