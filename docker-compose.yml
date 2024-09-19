@@ -81,6 +81,9 @@ services:
       KC_HOSTNAME_ADMIN_URL: "https://orthanc-con-2023.orthanc.team/keycloak"
     env_file:
       - ./secrets/KEYCLOAK_ADMIN_PASSWORD.env
+    volumes:
+      - ./favicon.jpg:/opt/keycloak/themes/orthanc/login/resources/img/favicon.ico
+      - ./logo.jpg:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text-shadow.png
 
   keycloak-db:
     image: postgres:15
