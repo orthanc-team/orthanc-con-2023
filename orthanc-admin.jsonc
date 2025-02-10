@@ -30,7 +30,9 @@
       "orthanc-explorer-2"
     ],
     "CheckedLevel": "studies",
-    "TokenHttpHeaders" : [ "api-key" ]
+    "TokenHttpHeaders" : [ "api-key" ],
+    "UncheckedResources" : [
+      "/app/images/unsupported.png"]
   }
 }
 
