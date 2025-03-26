@@ -2,7 +2,7 @@ version: "3"
 services:
 
   nginx:
-    image: orthancteam/orthanc-nginx-certbot:25.1.0
+    image: orthancteam/orthanc-nginx-certbot:main
     depends_on: [orthanc, orthanc-auth-service]
     restart: unless-stopped
     ports: ["80:80", "443:443"]
@@ -12,6 +12,7 @@ services:
       ENABLE_ORTHANC_TOKEN_SERVICE: "true"
       DOMAIN_NAME: "orthanc-con-2023.orthanc.team"
       CERTBOT_EMAIL: "ops@orthanc.team"
+      ENABLE_CLIENT_CERTIFICATE: "true"
 
   orthanc:
     image: orthancteam/orthanc:25.1.1
@@ -41,6 +42,32 @@ services:
     secrets:
       #- postgres-azure.secret.json
       - ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD
+
+  orthanc-for-cert:
+    image: orthancteam/orthanc:25.1.1
+    volumes:
+      - ./orthanc-common.jsonc:/etc/orthanc/orthanc-common.json
+      - orthanc-data:/var/lib/orthanc/db:Z
+    restart: unless-stopped
+    environment:
+      ORTHANC__NAME: "Orthanc"
+      VERBOSE_ENABLED: "true"
+      VERBOSE_STARTUP: "true"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_SEARCH_MODE: "search-button"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__STUDY_LIST_CONTENT_IF_NO_SEARCH: "empty"
+      ORTHANC__ORTHANC_EXPLORER_2__IS_DEFAULT_ORTHANC_UI: "true"
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__SHOW_SAME_PATIENT_STUDIES_FILTER: |
+        ["PatientBirthDate", "PatientID"]
+      STONE_WEB_VIEWER_PLUGIN_ENABLED: "true"
+      ORTHANC__STONE_WEB_VIEWER__SHOW_INFO_PANEL_AT_STARTUP: "Never"
+      ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc-cert/dicom-web/"
+      ORTHANC__DATABASE_SERVER_IDENTIFIER: "orthanc2"
+      ORTHANC__POSTGRESQL__ENABLE_INDEX: "true"
+      ORTHANC__POSTGRESQL__HOST: "postgres"
+      ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 10
+      ORTHANC__POSTGRESQL__TRANSACTION_MODE: "ReadCommitted"
+      ORTHANC__POSTGRESQL__ENABLE_STORAGE: "false"
+      ORTHANC__AUTHENTICATION_ENABLED: "false" # because protected by a client cert
 
   postgres:
     image: postgres:15
