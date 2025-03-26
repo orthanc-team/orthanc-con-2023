@@ -13,6 +13,8 @@ services:
       DOMAIN_NAME: "orthanc-con-2023.orthanc.team"
       CERTBOT_EMAIL: "ops@orthanc.team"
       ENABLE_CLIENT_CERTIFICATE: "true"
+    volumes:
+      - ./test/ca.crt:/etc/nginx/ssl/ca.crt
 
   orthanc:
     image: orthancteam/orthanc:25.1.1
