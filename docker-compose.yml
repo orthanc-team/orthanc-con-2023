@@ -109,9 +109,9 @@ services:
       KC_HOSTNAME: "https://orthanc-con-2023.orthanc.team/keycloak"
     env_file:
       - ./secrets/KC_BOOTSTRAP_ADMIN_PASSWORD.env
-    volumes:
-      - ./favicon.jpg:/opt/keycloak/themes/orthanc/login/resources/img/favicon.ico
-      - ./logo.jpg:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text-shadow.png
+    # volumes:
+    #   - ./favicon.jpg:/opt/keycloak/themes/orthanc/login/resources/img/favicon.ico
+    #   - ./logo.jpg:/opt/keycloak/themes/orthanc/login/resources/img/orthanc-logo-text-shadow.png
 
   keycloak-db:
     image: postgres:15
