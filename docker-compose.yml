@@ -10,6 +10,7 @@ services:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
       ENABLE_ORTHANC_TOKEN_SERVICE: "false"
+      ENABLE_OHIF: "true"
       DOMAIN_NAME: "demo.orthanc.team"
       CERTBOT_EMAIL: "ops@orthanc.team"
 
@@ -58,6 +59,7 @@ services:
       PUBLIC_LANDING_ROOT: "https://demo.orthanc.team/orthanc/ui/app/token-landing.html"
       PERMISSIONS_FILE_PATH: "/orthanc_auth_service/permissions.json"
       ENABLE_KEYCLOAK_API_KEYS: "true"
+      PUBLIC_OHIF_ROOT: "https://demo.orthanc.team/ohif/"
     env_file:
       - ./secrets/orthanc-token.secret.env
     secrets:
@@ -65,6 +67,13 @@ services:
       - KEYCLOAK_CLIENT_SECRET
     volumes:
       - ./permissions.json:/orthanc_auth_service/permissions.json
+
+  ohif:
+    image: orthancteam/ohif-v3:25.3.0
+#  uncomment if you want to customize ohif configuration
+#    volumes:
+#      - ./ohif-app-config.js:/usr/share/nginx/html/app-config.js
+    restart: unless-stopped
 
   keycloak:
     image: orthancteam/orthanc-keycloak:25.3.0

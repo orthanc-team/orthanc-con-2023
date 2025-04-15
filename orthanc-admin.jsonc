@@ -6,6 +6,8 @@
       "EnableShares": true,
       "DefaultShareDuration": 90,
       "ShareDurations": [0, 7, 15, 30, 90, 365],
+      "EnableOpenInOhifViewer3": true,
+      "OhifViewer3PublicRoot": "https://demo.orthanc.team/ohif/",
       "ViewersIcons" : {
         "stone-webviewer": "bi bi-eye-fill"
       }
@@ -27,7 +29,8 @@
     "WebServiceUsername": "share-user",
     "StandardConfigurations" : [
       "stone-webviewer",
-      "orthanc-explorer-2"
+      "orthanc-explorer-2",
+      "ohif"
     ],
     "CheckedLevel": "studies",
     "TokenHttpHeaders" : [ "api-key" ],
