@@ -16,7 +16,7 @@
     },
     "Keycloak" : {
       "Enable": true,
-      "Url": "https://orthanc-con-2023.orthanc.team/keycloak",
+      "Url": "https://demo.orthanc.team/keycloak",
       "Realm": "orthanc",
       "ClientId": "orthanc"
     }
