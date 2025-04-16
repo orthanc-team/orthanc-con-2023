@@ -15,7 +15,7 @@
     },
     "Tokens" : {
       "InstantLinksValidity": 3600,
-      "ShareType": "stone-viewer-publication"
+      "ShareType": "meddream-viewer-publication"
     },
     "Keycloak" : {
       "Enable": true,
