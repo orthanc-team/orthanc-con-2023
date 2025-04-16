@@ -113,6 +113,7 @@ services:
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc for API"
+      ORTHANC__DATABASE_SERVER_IDENTIFIER: "orthanc2"
       VERBOSE_ENABLED: "true"
       VERBOSE_STARTUP: "true"
       ORTHANC__AUTHENTICATION_ENABLED: "true"
@@ -120,6 +121,7 @@ services:
       ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc-api/dicom-web/"
       ORTHANC__POSTGRESQL__HOST: "postgres"
       ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 40
+      ORTHANC__ORTHANC_EXPLORER_2__UI_OPTIONS__MED_DREAM_VIEWER_PUBLIC_ROOT: "https://demo.orthanc.team/meddream/"
     secrets:
       - orthanc-api.secret.json
 
