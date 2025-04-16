@@ -69,6 +69,8 @@ services:
       PERMISSIONS_FILE_PATH: "/orthanc_auth_service/permissions.json"
       ENABLE_KEYCLOAK_API_KEYS: "true"
       PUBLIC_OHIF_ROOT: "https://demo.orthanc.team/ohif/"
+      MEDDREAM_TOKEN_SERVICE_URL: "http://meddream-token-service:8088/v3/generate"
+      PUBLIC_MEDDREAM_ROOT: "https://demo.orthanc.team/meddream/"
     env_file:
       - ./secrets/orthanc-token.secret.env
     secrets:
