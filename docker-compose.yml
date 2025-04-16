@@ -18,6 +18,7 @@ services:
 
   orthanc:
     image: orthancteam/orthanc:25.4.2
+    depends_on: [postgres]
     volumes:
       - ./orthanc-admin.jsonc:/etc/orthanc/orthanc-admin.json
       - orthanc-data:/var/lib/orthanc/db:Z
@@ -108,7 +109,7 @@ services:
     image: orthancteam/orthanc:25.4.2
     volumes:
       - orthanc-data:/var/lib/orthanc/db:Z
-    depends_on: [orthanc-db]
+    depends_on: [postgres]
     restart: unless-stopped
     environment:
       ORTHANC__NAME: "Orthanc for API"
