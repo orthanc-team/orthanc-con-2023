@@ -97,7 +97,6 @@ services:
       TOKEN_SERVICE_ADDRESS: "http://meddream-token-service:8088/v3/validate"
       ORTHANC_BASE_URL: "http://orthanc-for-api:8042"
       ORTHANC_USER: "meddream-user"
-      MEDDREAM_ADMIN_PASSWORD: "change-me"
       MEDDREAM_PACS_CONFIG_TYPE: "Dicomweb"
     env_file:
       - ./secrets/meddream.secret.env
