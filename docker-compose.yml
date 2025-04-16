@@ -10,6 +10,8 @@ services:
       ENABLE_ORTHANC: "true"
       ENABLE_KEYCLOAK: "true"
       ENABLE_ORTHANC_TOKEN_SERVICE: "false"
+      ENABLE_MEDDREAM: "true"
+      ENABLE_ORTHANC_FOR_API: "true"
       ENABLE_OHIF: "true"
       DOMAIN_NAME: "demo.orthanc.team"
       CERTBOT_EMAIL: "ops@orthanc.team"
@@ -80,6 +82,46 @@ services:
 #      - ./ohif-app-config.js:/usr/share/nginx/html/app-config.js
     restart: unless-stopped
 
+  meddream-token-service:
+    image: orthancteam/meddream-token-service:25.3.0
+    restart: unless-stopped
+
+  meddream-viewer:
+    image: orthancteam/meddream-viewer:25.3.0
+    restart: unless-stopped
+    depends_on:
+      - orthanc-for-api
+    environment:
+      integration: "study"
+      TOKEN_SERVICE_ADDRESS: "http://meddream-token-service:8088/v3/validate"
+      ORTHANC_BASE_URL: "http://orthanc-for-api:8042"
+      ORTHANC_USER: "meddream-user"
+      MEDDREAM_ADMIN_PASSWORD: "change-me"
+      MEDDREAM_PACS_CONFIG_TYPE: "Dicomweb"
+    env_file:
+      - ./secrets/meddream.secret.env
+    volumes:
+      - meddream-license:/opt/meddream/license
+
+  # An orthanc dedicated for API accesses and also used by MedDream
+  orthanc-for-api:
+    image: orthancteam/orthanc:25.4.2
+    volumes:
+      - orthanc-data:/var/lib/orthanc/db:Z
+    depends_on: [orthanc-db]
+    restart: unless-stopped
+    environment:
+      ORTHANC__NAME: "Orthanc for API"
+      VERBOSE_ENABLED: "true"
+      VERBOSE_STARTUP: "true"
+      ORTHANC__AUTHENTICATION_ENABLED: "true"
+      DICOM_WEB_PLUGIN_ENABLED: "true"
+      ORTHANC__DICOM_WEB__PUBLIC_ROOT: "/orthanc-api/dicom-web/"
+      ORTHANC__POSTGRESQL__HOST: "postgres"
+      ORTHANC__POSTGRESQL__INDEX_CONNECTIONS_COUNT: 40
+    secrets:
+      - orthanc-api.secret.json
+
   keycloak:
     image: orthancteam/orthanc-keycloak:25.3.0
     depends_on: [keycloak-db]
@@ -107,6 +149,7 @@ volumes:
   keycloak-db:
   orthanc-data:
   orthanc-index:
+  meddream-license:
 
 secrets:
   ORTHANC__AUTHORIZATION__WEB_SERVICE_PASSWORD:
@@ -115,3 +158,5 @@ secrets:
     file: secrets/SECRET_KEY
   KEYCLOAK_CLIENT_SECRET:
     file: secrets/KEYCLOAK_CLIENT_SECRET
+  orthanc-api.secret.json:
+    file: secrets/orthanc-api.secret.json
